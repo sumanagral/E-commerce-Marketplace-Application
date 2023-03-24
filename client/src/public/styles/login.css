@@ -1,0 +1,36 @@
+body {
+    background: #DAEAF4;
+    font-family: 'Inria Serif', serif;
+    background-repeat: no-repeat;
+}
+
+.login-form {
+    margin-top: 80px;
+    width: 650px;
+    padding: 2rem;
+    padding-bottom: 0;
+}
+
+.buyer-profile:hover {
+    box-shadow: inset 0 0 0 4px #DAEAF4;
+}
+
+.seller-profile:hover {
+    box-shadow: inset 0 0 0 4px #DAEAF4;
+}
+
+.loginBtn {
+    color: black;
+    float: right;
+    width: 100px;
+    background-color: #CFE6F3;
+    border: none;
+}
+
+.logo {
+    text-align: center;
+}
+
+.logo a {
+    color: black;
+}

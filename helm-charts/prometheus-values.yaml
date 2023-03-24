@@ -1,0 +1,78 @@
+prometheus-node-exporter:
+    hostRootfs: false
+
+alertmanager:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+      cert-manager.io/cluster-issuer: "ca-issuer"
+      nginx.ingress.kubernetes.io/auth-url: "https://127-0-0-1.sslip.io/oauth2/auth"
+      nginx.ingress.kubernetes.io/auth-signin: "https://127-0-0-1.sslip.io/oauth2/start?rd=$scheme://$host$request_uri"
+      ingress.kubernetes.io/proxy-body-size: "1024m"
+      nginx.ingress.kubernetes.io/proxy-body-size: "1024m"
+      nginx.ingress.kubernetes.io/auth-response-headers: "X-Forwarded-User, X-Forwarded-Groups, X-Forwarded-Email, X-Forwarded-Preferred-Username"
+    hosts: 
+      - alertmanager.127-0-0-1.sslip.io
+    tls:
+      - secretName: alertmanager-tls
+        hosts:
+          - alertmanager.127-0-0-1.sslip.io
+
+prometheus:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+      cert-manager.io/cluster-issuer: "ca-issuer"
+      nginx.ingress.kubernetes.io/auth-url: "https://127-0-0-1.sslip.io/oauth2/auth"
+      nginx.ingress.kubernetes.io/auth-signin: "https://127-0-0-1.sslip.io/oauth2/start?rd=$scheme://$host$request_uri"
+      ingress.kubernetes.io/proxy-body-size: "1024m"
+      nginx.ingress.kubernetes.io/proxy-body-size: "1024m"
+    hosts:
+      - prometheus.127-0-0-1.sslip.io
+    tls:
+      - secretName: prometheus-tls
+        hosts:
+          - prometheus.127-0-0-1.sslip.io
+
+grafana:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+      cert-manager.io/cluster-issuer: "ca-issuer"
+    hosts:
+      - grafana.127-0-0-1.sslip.io
+    tls:
+      - secretName: grafana-tls
+        hosts:
+          - grafana.127-0-0-1.sslip.io
+  grafana.ini:
+    server:
+      root_url: https://grafana.127-0-0-1.sslip.io
+      domain: grafana.127-0-0-1.sslip.io
+      enforce_domain: true
+    auth:
+      oauth_auto_login: false
+    auth.generic_oauth:
+      enabled: true
+      scopes: openid email profile
+      use_pkce: true
+      client_id: ''
+      client_secret: ''
+      auth_url: https://dev-07886404.okta.com/oauth2/v1/authorize
+      token_url: https://dev-07886404.okta.com/oauth2/v1/token
+      api_url: https://dev-07886404.okta.com/oauth2/v1/userinfo
+    user:
+      oauth_skip_org_role_update_sync: true
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus-kube-prometheus-prometheus:9090
+      - name: Loki
+        type: loki
+        url: http://loki:3100

@@ -1,0 +1,109 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body>
+    <style>
+        .w3-container {
+            font-size: 14px;
+        }
+
+        .center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+
+    <div class="center">
+        <h3 class="donate">
+            <div class="w3-card-4">
+
+                <header class="w3-container w3-blue">
+                    <h1>DONATE</h1>
+                </header>
+
+                <div class="w3-container">
+                    <p>Donate for a great cause. Be a hero.</p>
+
+                    <div id="paypal-button-container"></div>
+                    <!-- Sample PayPal credentials (client-id) are included -->
+                    <script src="https://www.paypal.com/sdk/js?client-id=ASIJU3iTpscMtE2ZHWV5Ej5_xgU6jWi6R2XpA7BGTdE75DiMcXfHmywGX6v6S8_cLnwlZs2Zvy3YS5Qk&currency=USD&intent=capture" data-sdk-integration-source="integrationbuilder"></script>
+            
+                    <script>
+                      const fundingSources = [
+                        paypal.FUNDING.PAYPAL,
+                          paypal.FUNDING.PAYLATER
+                        ]
+            
+                      for (const fundingSource of fundingSources) {
+                        const paypalButtonsComponent = paypal.Buttons({
+                          fundingSource: fundingSource,
+            
+                          // optional styling for buttons
+                          // https://developer.paypal.com/docs/checkout/standard/customize/buttons-style-guide/
+                          style: {
+                            shape: 'pill',
+                            height: 40,
+                          },
+            
+                          // set up the transaction
+                          createOrder: (data, actions) => {
+                            // pass in any options from the v2 orders create call:
+                            // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
+                            const createOrderPayload = {
+                              purchase_units: [
+                                {
+                                  amount: {
+                                    value: '10',
+                                  },
+                                },
+                              ],
+                            }
+            
+                            return actions.order.create(createOrderPayload)
+                          },
+            
+                          // finalize the transaction
+                          onApprove: (data, actions) => {
+                            const captureOrderHandler = (details) => {
+                              const payerName = details.payer.name.given_name
+                              console.log('Transaction completed!')
+                            }
+            
+                            return actions.order.capture().then(captureOrderHandler)
+                          },
+            
+                          // handle unrecoverable errors
+                          onError: (err) => {
+                            console.error(
+                              'An error prevented the buyer from checking out with PayPal',
+                            )
+                          },
+                        })
+            
+                        if (paypalButtonsComponent.isEligible()) {
+                          paypalButtonsComponent
+                            .render('#paypal-button-container')
+                            .catch((err) => {
+                              console.error('PayPal Buttons failed to render')
+                            })
+                        } else {
+                          console.log('The funding source is ineligible')
+                        }
+                      }
+                    </script>
+                </div>
+
+                <footer class="w3-container w3-blue">
+                    <h5>&copy Professional Cipher</h5>
+                </footer>
+
+            </div>
+        </h3>
+
+    </div>
+
+</body>

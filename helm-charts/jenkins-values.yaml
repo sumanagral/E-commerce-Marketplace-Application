@@ -1,0 +1,17 @@
+controller:
+  ingress:
+    enabled: true
+    apiVersion: "extensions/v1"
+    hostName: "jenkins.127-0-0-1.sslip.io"
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+      cert-manager.io/cluster-issuer: "ca-issuer"
+      nginx.ingress.kubernetes.io/auth-url: "https://127-0-0-1.sslip.io/oauth2/auth"
+      nginx.ingress.kubernetes.io/auth-signin: "https://127-0-0-1.sslip.io/oauth2/start?rd=$scheme://$host$request_uri"
+      ingress.kubernetes.io/proxy-body-size: "1024m"
+      nginx.ingress.kubernetes.io/proxy-body-size: "1024m"
+      nginx.ingress.kubernetes.io/auth-response-headers: "X-Auth-Request-User,X-Auth-Request-Email, X-Auth-Request-Preferred-Username"
+    tls:
+      - secretName: jenkins-tls
+        hosts:
+          - jenkins.127-0-0-1.sslip.io

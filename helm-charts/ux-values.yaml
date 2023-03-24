@@ -1,0 +1,4 @@
+ingress:
+  enabled: true
+image:
+  tag: 0.0.2

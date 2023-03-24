@@ -1,0 +1,8 @@
+loki:
+    storage:
+      type: 'filesystem'
+    rulerConfig:
+      storage:
+        type: local
+    memberlist:
+      - loki-memberlist.default.svc.cluster.local

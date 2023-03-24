@@ -1,0 +1,15 @@
+.fav-row{
+    display: flex;
+    justify-content: center;
+}
+
+.fav-card{
+    width: 250px;
+    height: 300px;
+    justify-content: center;
+    align-items: center;
+}
+.favitem-card{
+    border: none;
+    width: auto;
+}
